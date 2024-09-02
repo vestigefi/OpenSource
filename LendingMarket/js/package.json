@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "algosdk": "^2.2.0"
+  }
+}

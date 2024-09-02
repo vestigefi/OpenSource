@@ -1,0 +1,1664 @@
+#pragma version 8
+txn NumAppArgs
+int 0
+==
+bnz main_l24
+txna ApplicationArgs 0
+method "change_admin(address)void"
+==
+bnz main_l23
+txna ApplicationArgs 0
+method "add_liquidity(txn)void"
+==
+bnz main_l22
+txna ApplicationArgs 0
+method "remove_liquidity(axfer)void"
+==
+bnz main_l21
+txna ApplicationArgs 0
+method "check_liquidation(uint64)void"
+==
+bnz main_l20
+txna ApplicationArgs 0
+method "borrow_supply(uint64,uint64)void"
+==
+bnz main_l19
+txna ApplicationArgs 0
+method "remove_collateral(uint64,uint64)void"
+==
+bnz main_l18
+txna ApplicationArgs 0
+method "liquidate_position(address,uint64)void"
+==
+bnz main_l17
+txna ApplicationArgs 0
+method "donate_rewards(txn,uint64,uint64)void"
+==
+bnz main_l16
+txna ApplicationArgs 0
+method "initialize_upgrade(byte[],byte[])void"
+==
+bnz main_l15
+txna ApplicationArgs 0
+method "setup_assets(asset,asset,string,string,string)void"
+==
+bnz main_l14
+txna ApplicationArgs 0
+method "update_model_params(uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,(string,uint64)[],uint64,uint64)void"
+==
+bnz main_l13
+err
+main_l13:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub updatemodelparamscaster_31
+int 1
+return
+main_l14:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub setupassetscaster_30
+int 1
+return
+main_l15:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub initializeupgradecaster_29
+int 1
+return
+main_l16:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub donaterewardscaster_28
+int 1
+return
+main_l17:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub liquidatepositioncaster_27
+int 1
+return
+main_l18:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub removecollateralcaster_26
+int 1
+return
+main_l19:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub borrowsupplycaster_25
+int 1
+return
+main_l20:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub checkliquidationcaster_24
+int 1
+return
+main_l21:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub removeliquiditycaster_23
+int 1
+return
+main_l22:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub addliquiditycaster_22
+int 1
+return
+main_l23:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub changeadmincaster_21
+int 1
+return
+main_l24:
+txn OnCompletion
+int NoOp
+==
+bnz main_l28
+txn OnCompletion
+int UpdateApplication
+==
+bnz main_l27
+err
+main_l27:
+txn ApplicationID
+int 0
+!=
+assert
+callsub isadmin_2
+txn ApprovalProgram
+sha512_256
+byte "uh"
+app_global_get
+==
+assert
+txn ClearStateProgram
+sha512_256
+byte "uc"
+app_global_get
+==
+assert
+byte "ua"
+app_global_get
+int 0
+>
+assert
+global LatestTimestamp
+byte "ua"
+app_global_get
+>
+assert
+byte "ua"
+app_global_del
+byte "uh"
+app_global_del
+byte "uc"
+app_global_del
+int 1
+return
+main_l28:
+txn ApplicationID
+int 0
+==
+assert
+byte "ca"
+txn Sender
+app_global_put
+int 1
+return
+int 1
+return
+
+// paymentTxn
+paymentTxn_0:
+proto 3 0
+frame_dig -3
+int 0
+==
+bnz paymentTxn_0_l2
+int axfer
+itxn_field TypeEnum
+frame_dig -3
+itxn_field XferAsset
+frame_dig -2
+itxn_field AssetReceiver
+frame_dig -1
+itxn_field AssetAmount
+int 0
+itxn_field Fee
+b paymentTxn_0_l3
+paymentTxn_0_l2:
+int pay
+itxn_field TypeEnum
+frame_dig -2
+itxn_field Receiver
+frame_dig -1
+itxn_field Amount
+int 0
+itxn_field Fee
+paymentTxn_0_l3:
+retsub
+
+// get_asset_holdings
+getassetholdings_1:
+proto 1 1
+frame_dig -1
+int 0
+==
+bnz getassetholdings_1_l2
+global CurrentApplicationAddress
+frame_dig -1
+asset_holding_get AssetBalance
+store 24
+retsub
+getassetholdings_1_l2:
+global CurrentApplicationAddress
+balance
+retsub
+
+// is_admin
+isadmin_2:
+proto 0 0
+txn Sender
+byte "ca"
+app_global_get
+==
+assert
+retsub
+
+// change_admin
+changeadmin_3:
+proto 1 0
+callsub isadmin_2
+byte "ca"
+frame_dig -1
+app_global_put
+retsub
+
+// add_liquidity
+addliquidity_4:
+proto 1 0
+global CurrentApplicationAddress
+byte "al"
+app_global_get
+asset_holding_get AssetBalance
+store 3
+store 2
+byte "ab"
+app_global_get
+int 0
+==
+bnz addliquidity_4_l5
+frame_dig -1
+gtxns AssetReceiver
+global CurrentApplicationAddress
+==
+assert
+frame_dig -1
+gtxns XferAsset
+byte "ab"
+app_global_get
+==
+assert
+frame_dig -1
+gtxns AssetAmount
+addliquidity_4_l2:
+store 1
+load 2
+int 18446744073709551615
+==
+bnz addliquidity_4_l4
+load 1
+int 18446744073709551615
+load 2
+-
+mulw
+int 0
+byte "ll"
+app_global_get
+divmodw
+pop
+pop
+swap
+!
+assert
+store 0
+b addliquidity_4_l6
+addliquidity_4_l4:
+load 1
+store 0
+b addliquidity_4_l6
+addliquidity_4_l5:
+frame_dig -1
+gtxns Receiver
+global CurrentApplicationAddress
+==
+assert
+frame_dig -1
+gtxns Amount
+b addliquidity_4_l2
+addliquidity_4_l6:
+byte "ll"
+byte "ll"
+app_global_get
+load 1
++
+app_global_put
+load 0
+int 0
+>
+assert
+itxn_begin
+byte "al"
+app_global_get
+txn Sender
+load 0
+callsub paymentTxn_0
+itxn_submit
+callsub updateinterestpertok_6
+retsub
+
+// remove_liquidity
+removeliquidity_5:
+proto 1 0
+frame_dig -1
+gtxns XferAsset
+byte "al"
+app_global_get
+==
+assert
+global CurrentApplicationAddress
+byte "al"
+app_global_get
+asset_holding_get AssetBalance
+store 7
+store 6
+frame_dig -1
+gtxns AssetAmount
+byte "ll"
+app_global_get
+mulw
+int 0
+int 18446744073709551615
+load 6
+-
+frame_dig -1
+gtxns AssetAmount
++
+divmodw
+pop
+pop
+swap
+!
+assert
+store 5
+load 5
+int 0
+>
+assert
+byte "ll"
+app_global_get
+load 5
+-
+byte "lo"
+app_global_get
+-
+int 0
+>=
+assert
+callsub updateinterestpertok_6
+byte "ll"
+byte "ll"
+app_global_get
+load 5
+-
+app_global_put
+itxn_begin
+byte "ab"
+app_global_get
+txn Sender
+load 5
+callsub paymentTxn_0
+itxn_submit
+retsub
+
+// update_interest_per_tok
+updateinterestpertok_6:
+proto 0 0
+byte "ll"
+app_global_get
+int 0
+==
+bnz updateinterestpertok_6_l4
+byte "it"
+byte "it"
+app_global_get
+int 10000
+byte "lo"
+app_global_get
+mulw
+int 0
+byte "ll"
+app_global_get
+divmodw
+pop
+pop
+swap
+!
+assert
+store 4
+load 4
+byte "ip"
+app_global_get
+>
+bnz updateinterestpertok_6_l3
+byte "ia"
+app_global_get
+byte "ia"
+app_global_get
+byte "ib"
+app_global_get
+-
+load 4
+*
+int 10000
+byte "ip"
+app_global_get
+-
+/
+-
+b updateinterestpertok_6_l5
+updateinterestpertok_6_l3:
+load 4
+byte "ip"
+app_global_get
+-
+load 4
+byte "ip"
+app_global_get
+-
+*
+byte "ic"
+app_global_get
+byte "ib"
+app_global_get
+-
+*
+int 10000
+byte "ip"
+app_global_get
+-
+int 10000
+byte "ip"
+app_global_get
+-
+*
+/
+byte "ib"
+app_global_get
++
+b updateinterestpertok_6_l5
+updateinterestpertok_6_l4:
+retsub
+updateinterestpertok_6_l5:
+int 58494241
+*
+itob
+global LatestTimestamp
+byte "iu"
+app_global_get
+-
+itob
+b*
+b+
+int 16
+bzero
+b|
+app_global_put
+retsub
+
+// move_interest
+moveinterest_7:
+proto 2 0
+frame_dig -1
+store 38
+frame_dig -2
+store 37
+byte "it"
+app_global_get
+load 37
+loads
+b-
+load 38
+loads
+b*
+int 18446744073709551615
+itob
+b/
+store 39
+load 38
+load 38
+loads
+load 39
+int 0
+extract_uint64
++
+stores
+load 37
+byte "it"
+app_global_get
+stores
+retsub
+
+// add_staking_rewards
+addstakingrewards_8:
+proto 1 0
+int 1
+pop
+retsub
+
+// distribute_profits
+distributeprofits_9:
+proto 1 0
+byte "rs"
+app_global_get
+byte "rl"
+app_global_get
++
+byte "ri"
+app_global_get
++
+store 53
+frame_dig -1
+byte "rs"
+app_global_get
+*
+load 53
+/
+callsub addstakingrewards_8
+byte "li"
+byte "li"
+app_global_get
+frame_dig -1
+byte "ri"
+app_global_get
+*
+load 53
+/
++
+app_global_put
+byte "ll"
+byte "ll"
+app_global_get
+frame_dig -1
+byte "rl"
+app_global_get
+*
+load 53
+/
++
+app_global_put
+retsub
+
+// get_bur
+getbur_10:
+proto 2 1
+byte "so"
+app_global_get
+byte "ac"
+app_global_get
+itob
+app_global_get_ex
+store 26
+store 25
+byte "so"
+app_global_get
+byte "ab"
+app_global_get
+itob
+app_global_get_ex
+store 28
+store 27
+int 9970
+frame_dig -2
+*
+load 27
+mulw
+int 0
+int 9970
+frame_dig -2
+*
+int 10000
+load 25
+*
++
+divmodw
+pop
+pop
+swap
+!
+assert
+store 29
+int 10000
+frame_dig -1
+*
+load 29
+/
+retsub
+
+// bur_below_max
+burbelowmax_11:
+proto 1 1
+frame_dig -1
+byte "mb"
+app_global_get
+<
+retsub
+
+// not_liquidateable
+notliquidateable_12:
+proto 1 1
+frame_dig -1
+int 10000
+byte "li"
+app_global_get
+-
+byte "ls"
+app_global_get
+-
+<
+retsub
+
+// check_liquidation
+checkliquidation_13:
+proto 1 0
+txn Sender
+frame_dig -1
+itob
+concat
+box_get
+store 15
+store 14
+load 14
+int 0
+extract_uint64
+store 9
+load 14
+int 8
+extract_uint64
+store 8
+load 14
+extract 16 16
+store 10
+byte "ac"
+app_global_get
+itob
+box_get
+store 17
+store 16
+byte "ab"
+app_global_get
+itob
+box_get
+store 19
+store 18
+load 17
+bnz checkliquidation_13_l14
+checkliquidation_13_l1:
+load 19
+bnz checkliquidation_13_l7
+checkliquidation_13_l2:
+load 9
+load 8
+callsub getbur_10
+store 13
+byte "bu"
+box_get
+store 21
+store 20
+txn Sender
+frame_dig -1
+itob
+concat
+box_get
+store 23
+store 22
+load 23
+bz checkliquidation_13_l15
+load 13
+load 20
+btoi
+>
+bnz checkliquidation_13_l6
+load 13
+callsub burbelowmax_11
+assert
+checkliquidation_13_l5:
+txn Sender
+frame_dig -1
+itob
+concat
+load 9
+itob
+load 8
+itob
+concat
+load 10
+concat
+box_put
+b checkliquidation_13_l15
+checkliquidation_13_l6:
+load 13
+callsub notliquidateable_12
+assert
+b checkliquidation_13_l5
+checkliquidation_13_l7:
+load 18
+store 11
+byte "ab"
+app_global_get
+callsub getassetholdings_1
+store 12
+load 12
+load 11
+-
+load 8
+>=
+bnz checkliquidation_13_l9
+load 8
+load 12
+load 11
+-
+-
+store 8
+b checkliquidation_13_l2
+checkliquidation_13_l9:
+load 12
+load 11
+-
+load 8
+-
+int 0
+>
+bnz checkliquidation_13_l13
+checkliquidation_13_l10:
+load 9
+int 0
+>
+bnz checkliquidation_13_l12
+checkliquidation_13_l11:
+txn Sender
+frame_dig -1
+itob
+concat
+box_del
+pop
+b checkliquidation_13_l2
+checkliquidation_13_l12:
+itxn_begin
+byte "ac"
+app_global_get
+txn Sender
+load 9
+callsub paymentTxn_0
+itxn_submit
+b checkliquidation_13_l11
+checkliquidation_13_l13:
+itxn_begin
+byte "ab"
+app_global_get
+txn Sender
+load 12
+load 11
+-
+load 8
+-
+callsub paymentTxn_0
+itxn_submit
+b checkliquidation_13_l10
+checkliquidation_13_l14:
+load 9
+byte "ac"
+app_global_get
+callsub getassetholdings_1
+load 16
+btoi
+-
++
+store 9
+b checkliquidation_13_l1
+checkliquidation_13_l15:
+byte "ac"
+app_global_get
+itob
+box_del
+pop
+byte "ab"
+app_global_get
+itob
+box_del
+pop
+byte "bu"
+box_del
+pop
+retsub
+
+// borrow_supply
+borrowsupply_14:
+proto 2 0
+callsub updateinterestpertok_6
+txn Sender
+frame_dig -2
+itob
+concat
+box_get
+store 34
+store 33
+load 34
+!
+bnz borrowsupply_14_l6
+borrowsupply_14_l1:
+load 33
+int 0
+extract_uint64
+store 31
+load 33
+int 8
+extract_uint64
+store 30
+load 33
+extract 16 16
+store 32
+int 32
+int 30
+callsub moveinterest_7
+load 30
+frame_dig -1
++
+store 30
+itxn_begin
+byte "ab"
+app_global_get
+txn Sender
+frame_dig -1
+callsub paymentTxn_0
+itxn_submit
+txn Sender
+frame_dig -2
+itob
+concat
+load 31
+itob
+load 30
+itob
+concat
+load 32
+concat
+box_put
+global GroupSize
+int 0
+gtxnsas ApplicationArgs
+method "check_liquidation(uint64)void"
+==
+global GroupSize
+int 1
+gtxnsas ApplicationArgs
+int 1
+txnas ApplicationArgs
+==
+&&
+global GroupSize
+gtxns Sender
+txn Sender
+==
+&&
+bnz borrowsupply_14_l3
+load 31
+load 30
+callsub getbur_10
+callsub burbelowmax_11
+assert
+txn Sender
+frame_dig -2
+itob
+concat
+box_get
+store 34
+store 33
+txn Sender
+frame_dig -2
+itob
+concat
+log
+load 33
+log
+b borrowsupply_14_l7
+borrowsupply_14_l3:
+byte "ac"
+app_global_get
+itob
+int 8
+box_create
+!
+assert
+byte "ac"
+app_global_get
+int 0
+==
+bnz borrowsupply_14_l5
+global CurrentApplicationAddress
+byte "ac"
+app_global_get
+asset_holding_get AssetBalance
+store 36
+store 35
+load 36
+assert
+byte "ac"
+app_global_get
+itob
+load 35
+itob
+box_put
+b borrowsupply_14_l7
+borrowsupply_14_l5:
+byte "ac"
+app_global_get
+itob
+global CurrentApplicationAddress
+balance
+itob
+box_put
+b borrowsupply_14_l7
+borrowsupply_14_l6:
+txn Sender
+frame_dig -2
+itob
+concat
+int 32
+box_create
+pop
+txn Sender
+frame_dig -2
+itob
+concat
+int 16
+byte "it"
+app_global_get
+box_replace
+txn Sender
+frame_dig -2
+itob
+concat
+box_get
+store 34
+store 33
+b borrowsupply_14_l1
+borrowsupply_14_l7:
+retsub
+
+// remove_collateral
+removecollateral_15:
+proto 2 0
+txn Sender
+frame_dig -2
+itob
+concat
+box_get
+store 44
+store 43
+load 43
+int 0
+extract_uint64
+store 41
+load 43
+int 8
+extract_uint64
+store 40
+load 43
+extract 16 16
+store 42
+callsub updateinterestpertok_6
+int 42
+int 40
+callsub moveinterest_7
+load 41
+frame_dig -1
+-
+store 41
+itxn_begin
+byte "ac"
+app_global_get
+txn Sender
+frame_dig -1
+callsub paymentTxn_0
+itxn_submit
+txn Sender
+frame_dig -2
+itob
+concat
+load 41
+itob
+load 40
+itob
+concat
+load 42
+concat
+box_put
+global GroupSize
+gtxns Sender
+txn Sender
+==
+global GroupSize
+int 0
+gtxnsas ApplicationArgs
+method "check_liquidation(uint64)void"
+==
+&&
+global GroupSize
+int 1
+gtxnsas ApplicationArgs
+int 1
+txnas ApplicationArgs
+==
+&&
+bnz removecollateral_15_l2
+load 41
+load 40
+callsub getbur_10
+callsub burbelowmax_11
+assert
+txn Sender
+frame_dig -2
+itob
+concat
+box_get
+store 44
+store 43
+txn Sender
+frame_dig -2
+itob
+concat
+log
+load 43
+log
+b removecollateral_15_l5
+removecollateral_15_l2:
+byte "ab"
+app_global_get
+itob
+int 8
+box_create
+!
+assert
+byte "ab"
+app_global_get
+int 0
+==
+bnz removecollateral_15_l4
+global CurrentApplicationAddress
+byte "ab"
+app_global_get
+asset_holding_get AssetBalance
+store 46
+store 45
+load 46
+assert
+byte "ab"
+app_global_get
+itob
+load 45
+itob
+box_put
+b removecollateral_15_l5
+removecollateral_15_l4:
+byte "ab"
+app_global_get
+itob
+global CurrentApplicationAddress
+balance
+itob
+box_put
+removecollateral_15_l5:
+retsub
+
+// liquidate_position
+liquidateposition_16:
+proto 2 0
+frame_dig -2
+frame_dig -1
+itob
+concat
+box_get
+store 52
+store 51
+load 51
+int 0
+extract_uint64
+store 47
+load 51
+int 8
+extract_uint64
+store 48
+load 51
+extract 24 16
+store 49
+callsub updateinterestpertok_6
+int 49
+int 48
+callsub moveinterest_7
+load 47
+load 48
+callsub getbur_10
+callsub notliquidateable_12
+!
+assert
+int 1
+store 50
+load 50
+int 1
+>
+assert
+load 50
+load 48
+>
+bnz liquidateposition_16_l2
+byte "ll"
+byte "ll"
+app_global_get
+load 48
+load 50
+-
+-
+app_global_put
+byte "lo"
+byte "lo"
+app_global_get
+load 48
+-
+app_global_put
+b liquidateposition_16_l3
+liquidateposition_16_l2:
+load 50
+load 48
+-
+callsub distributeprofits_9
+byte "lo"
+byte "lo"
+app_global_get
+load 48
+-
+app_global_put
+liquidateposition_16_l3:
+frame_dig -2
+frame_dig -1
+itob
+concat
+box_del
+pop
+retsub
+
+// donate_rewards
+donaterewards_17:
+proto 3 0
+byte "ab"
+app_global_get
+int 0
+==
+bnz donaterewards_17_l2
+frame_dig -3
+gtxns XferAsset
+byte "ab"
+app_global_get
+==
+assert
+frame_dig -3
+gtxns AssetReceiver
+global CurrentApplicationAddress
+==
+assert
+frame_dig -3
+gtxns AssetAmount
+b donaterewards_17_l3
+donaterewards_17_l2:
+frame_dig -3
+gtxns Receiver
+global CurrentApplicationAddress
+==
+assert
+frame_dig -3
+gtxns Amount
+donaterewards_17_l3:
+store 54
+load 54
+frame_dig -1
+*
+frame_dig -2
+frame_dig -1
++
+/
+callsub addstakingrewards_8
+byte "ll"
+byte "ll"
+app_global_get
+load 54
+frame_dig -2
+*
+frame_dig -2
+frame_dig -1
++
+/
++
+app_global_put
+retsub
+
+// initialize_upgrade
+initializeupgrade_18:
+proto 2 0
+callsub isadmin_2
+byte "uh"
+frame_dig -2
+extract 2 0
+app_global_put
+byte "uc"
+frame_dig -1
+extract 2 0
+app_global_put
+byte "ua"
+global LatestTimestamp
+int 1000
+-
+app_global_put
+retsub
+
+// setup_assets
+setupassets_19:
+proto 5 0
+callsub isadmin_2
+byte "it"
+app_global_get
+int 0
+==
+assert
+byte "ab"
+frame_dig -5
+txnas Assets
+app_global_put
+byte "ac"
+frame_dig -4
+txnas Assets
+app_global_put
+byte "ll"
+int 0
+app_global_put
+byte "lo"
+int 0
+app_global_put
+byte "li"
+int 0
+app_global_put
+byte "iu"
+int 0
+app_global_put
+byte "it"
+int 16
+bzero
+app_global_put
+itxn_begin
+byte "ab"
+app_global_get
+int 0
+!=
+bnz setupassets_19_l3
+setupassets_19_l1:
+byte "ac"
+app_global_get
+int 0
+!=
+bz setupassets_19_l4
+byte "ac"
+app_global_get
+global CurrentApplicationAddress
+int 0
+callsub paymentTxn_0
+itxn_next
+b setupassets_19_l4
+setupassets_19_l3:
+byte "ab"
+app_global_get
+global CurrentApplicationAddress
+int 0
+callsub paymentTxn_0
+itxn_next
+b setupassets_19_l1
+setupassets_19_l4:
+int acfg
+itxn_field TypeEnum
+int 18446744073709551615
+itxn_field ConfigAssetTotal
+int 6
+itxn_field ConfigAssetDecimals
+int 0
+itxn_field ConfigAssetDefaultFrozen
+frame_dig -1
+extract 2 0
+itxn_field ConfigAssetURL
+frame_dig -3
+extract 2 0
+itxn_field ConfigAssetName
+frame_dig -2
+extract 2 0
+itxn_field ConfigAssetUnitName
+global ZeroAddress
+itxn_field ConfigAssetFreeze
+global ZeroAddress
+itxn_field ConfigAssetManager
+global ZeroAddress
+itxn_field ConfigAssetClawback
+global CurrentApplicationAddress
+itxn_field ConfigAssetReserve
+int 0
+itxn_field Fee
+itxn_submit
+byte "al"
+itxn CreatedAssetID
+app_global_put
+retsub
+
+// update_model_params
+updatemodelparams_20:
+proto 13 0
+callsub isadmin_2
+byte "om"
+frame_dig -13
+app_global_put
+byte "li"
+frame_dig -12
+app_global_put
+byte "ls"
+frame_dig -11
+app_global_put
+byte "rs"
+frame_dig -10
+app_global_put
+byte "rl"
+frame_dig -9
+app_global_put
+byte "ri"
+frame_dig -8
+app_global_put
+byte "ip"
+frame_dig -7
+app_global_put
+byte "ia"
+frame_dig -6
+app_global_put
+byte "ib"
+frame_dig -5
+app_global_put
+byte "ic"
+frame_dig -4
+app_global_put
+byte "sd"
+frame_dig -3
+app_global_put
+byte "sa"
+frame_dig -2
+app_global_put
+byte "so"
+frame_dig -1
+app_global_put
+retsub
+
+// change_admin_caster
+changeadmincaster_21:
+proto 0 0
+byte ""
+txna ApplicationArgs 1
+frame_bury 0
+frame_dig 0
+callsub changeadmin_3
+retsub
+
+// add_liquidity_caster
+addliquiditycaster_22:
+proto 0 0
+int 0
+txn GroupIndex
+int 1
+-
+frame_bury 0
+frame_dig 0
+callsub addliquidity_4
+retsub
+
+// remove_liquidity_caster
+removeliquiditycaster_23:
+proto 0 0
+int 0
+txn GroupIndex
+int 1
+-
+frame_bury 0
+frame_dig 0
+gtxns TypeEnum
+int axfer
+==
+assert
+frame_dig 0
+callsub removeliquidity_5
+retsub
+
+// check_liquidation_caster
+checkliquidationcaster_24:
+proto 0 0
+int 0
+txna ApplicationArgs 1
+btoi
+frame_bury 0
+frame_dig 0
+callsub checkliquidation_13
+retsub
+
+// borrow_supply_caster
+borrowsupplycaster_25:
+proto 0 0
+int 0
+dup
+txna ApplicationArgs 1
+btoi
+frame_bury 0
+txna ApplicationArgs 2
+btoi
+frame_bury 1
+frame_dig 0
+frame_dig 1
+callsub borrowsupply_14
+retsub
+
+// remove_collateral_caster
+removecollateralcaster_26:
+proto 0 0
+int 0
+dup
+txna ApplicationArgs 1
+btoi
+frame_bury 0
+txna ApplicationArgs 2
+btoi
+frame_bury 1
+frame_dig 0
+frame_dig 1
+callsub removecollateral_15
+retsub
+
+// liquidate_position_caster
+liquidatepositioncaster_27:
+proto 0 0
+byte ""
+int 0
+txna ApplicationArgs 1
+frame_bury 0
+txna ApplicationArgs 2
+btoi
+frame_bury 1
+frame_dig 0
+frame_dig 1
+callsub liquidateposition_16
+retsub
+
+// donate_rewards_caster
+donaterewardscaster_28:
+proto 0 0
+int 0
+dupn 2
+txna ApplicationArgs 1
+btoi
+frame_bury 1
+txna ApplicationArgs 2
+btoi
+frame_bury 2
+txn GroupIndex
+int 1
+-
+frame_bury 0
+frame_dig 0
+frame_dig 1
+frame_dig 2
+callsub donaterewards_17
+retsub
+
+// initialize_upgrade_caster
+initializeupgradecaster_29:
+proto 0 0
+byte ""
+dup
+txna ApplicationArgs 1
+frame_bury 0
+txna ApplicationArgs 2
+frame_bury 1
+frame_dig 0
+frame_dig 1
+callsub initializeupgrade_18
+retsub
+
+// setup_assets_caster
+setupassetscaster_30:
+proto 0 0
+int 0
+dup
+byte ""
+dupn 2
+txna ApplicationArgs 1
+int 0
+getbyte
+frame_bury 0
+txna ApplicationArgs 2
+int 0
+getbyte
+frame_bury 1
+txna ApplicationArgs 3
+frame_bury 2
+txna ApplicationArgs 4
+frame_bury 3
+txna ApplicationArgs 5
+frame_bury 4
+frame_dig 0
+frame_dig 1
+frame_dig 2
+frame_dig 3
+frame_dig 4
+callsub setupassets_19
+retsub
+
+// update_model_params_caster
+updatemodelparamscaster_31:
+proto 0 0
+int 0
+dupn 9
+byte ""
+int 0
+dup
+txna ApplicationArgs 1
+btoi
+frame_bury 0
+txna ApplicationArgs 2
+btoi
+frame_bury 1
+txna ApplicationArgs 3
+btoi
+frame_bury 2
+txna ApplicationArgs 4
+btoi
+frame_bury 3
+txna ApplicationArgs 5
+btoi
+frame_bury 4
+txna ApplicationArgs 6
+btoi
+frame_bury 5
+txna ApplicationArgs 7
+btoi
+frame_bury 6
+txna ApplicationArgs 8
+btoi
+frame_bury 7
+txna ApplicationArgs 9
+btoi
+frame_bury 8
+txna ApplicationArgs 10
+btoi
+frame_bury 9
+txna ApplicationArgs 11
+frame_bury 10
+txna ApplicationArgs 12
+btoi
+frame_bury 11
+txna ApplicationArgs 13
+btoi
+frame_bury 12
+frame_dig 0
+frame_dig 1
+frame_dig 2
+frame_dig 3
+frame_dig 4
+frame_dig 5
+frame_dig 6
+frame_dig 7
+frame_dig 8
+frame_dig 9
+frame_dig 10
+frame_dig 11
+frame_dig 12
+callsub updatemodelparams_20
+retsub

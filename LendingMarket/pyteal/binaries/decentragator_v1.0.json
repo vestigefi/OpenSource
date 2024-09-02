@@ -1,0 +1,97 @@
+{
+    "name": "decentragator",
+    "methods": [
+        {
+            "name": "decentragate_sef",
+            "args": [
+                {
+                    "type": "uint64",
+                    "name": "from_asset"
+                },
+                {
+                    "type": "uint64",
+                    "name": "to_asset"
+                },
+                {
+                    "type": "uint64",
+                    "name": "min_out"
+                },
+                {
+                    "type": "address",
+                    "name": "target"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "initialize",
+            "args": [
+                {
+                    "type": "uint64",
+                    "name": "asset1"
+                },
+                {
+                    "type": "uint64",
+                    "name": "asset2"
+                },
+                {
+                    "type": "uint64",
+                    "name": "l1"
+                },
+                {
+                    "type": "uint64",
+                    "name": "l2"
+                },
+                {
+                    "type": "uint64",
+                    "name": "max_lchange_key"
+                },
+                {
+                    "type": "uint64",
+                    "name": "mutable"
+                },
+                {
+                    "type": "(byte[2],uint64,byte[])[]",
+                    "name": "dextupleobj"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "update_oracle",
+            "args": [],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "update_oracle_limited",
+            "args": [],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "initialize_upgrade",
+            "args": [
+                {
+                    "type": "byte[]",
+                    "name": "approval_hash"
+                },
+                {
+                    "type": "byte[]",
+                    "name": "clear_hash"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        }
+    ],
+    "networks": {},
+    "desc": "A not so simple smartcontract which lets you aggregate up to five\n        dex-swaps. This contract handles algo nicely by mapping an 'ASA' with\n        ID 0 to algo."
+}

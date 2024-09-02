@@ -1,0 +1,39 @@
+title: Vestige.Fi Analytics Improvement and Expansion
+author: Grzegorz Raczek (@grzracz)
+company_name: Vestige.Fi
+category: dApps, Tools, Analytics, Ecosystem Development
+focus_area: DeFi, Dev Tooling, Analytics
+open_source: Yes
+amount_requested: 150,000 ALGO
+status: Draft
+---
+
+## Abstract
+This proposal aims to enhance and expand the Vestige.Fi analytics platform, a valuable resource for the Algorand ecosystem. The primary goals of this project are to add stable swap tracking and swapping functionality, open the aggregator as a white label service allowing users to easily integrate it into their projects, expand free services by offering easy-to-use chart embeddables connected to the platform, implement a basic timestamp transaction endpoint for "at a given time" price queries, and integrate lending pools from leading lending markets, such as Folks Finance and AlgoFi.
+
+## Team
+- Grzegorz Raczek: Grzegorz is a Fullstack Senior Engineer with over five years of DevOps experience, and has been focusing on developing on the Algorand Blockchain for the last two years. He possesses a deep understanding of the Algorand ecosystem and has contributed to various projects.
+- BunsanMuchi: BunsanMuchi is a Blockchain developer with over five years of development experience, specializing in DeFi and smart contract development. He has a strong track record of creating innovative solutions in the blockchain space.
+- Erik Hasselwander: Erik is a Blockchain developer specialized in DeFi and data analysis, with a proven ability to analyze complex data sets and develop user-friendly analytics tools for the Algorand ecosystem.
+
+## Experience with Algorand
+The Vestige.Fi team has extensive experience working with the Algorand ecosystem, including:
+- Developing one of the most popular sites on the chain, Vestige.Fi
+- Developing the most widely-used price API in the ecosystem, which is utilized by ecosystem leaders such as Pera Wallet and Exodus
+- Creating some of the most used DeFi applications, including a Smart Router Aggregator, a Decentralized liquidity locker, and an IDO/Launchpad platform
+- Consistently over-delivering on previously awarded grants
+- Providing dev work for other ecosystem members, such as HumbleSwap
+- Winning hackathons and participating in accelerators focused on their main area of interest (DeFi)
+
+## Roadmap
+1. Month 1: Develop and implement stable swap tracking and swapping functionality to enhance the platform's capabilities
+2. Month 2-3: Open the aggregator to a white label service, allowing users to seamlessly integrate Vestige.Fi's analytics tools into their projects
+3. Month 4: Expand free services by providing easy-to-use chart embeddables connected to the platform, encouraging content creators to promote Algorand-based projects
+4. Month 4-5: Implement a basic timestamp transaction endpoint for "at a given time" price queries, simplifying tax calculations for users
+5. Month 5: Integrate lending pools from leading lending markets, such as Folks Finance and AlgoFi, to increase DeFi adoption on Algorand
+
+## Benefits for the community
+The proposed improvements and expansions to Vestige.Fi will greatly benefit the Algorand community in a variety of ways:
+1. Enhanced analytics and DeFi tooling will attract more users to the Algorand ecosystem, promoting growth and engagement
+2. Opening the aggregator as a white label service will enable other projects to leverage Vestige.Fi's analytics capabilities, fostering collaboration and innovation
+3. Easy chart embeddables will encourage content creators to promote Algorand-based

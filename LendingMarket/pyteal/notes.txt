@@ -1,0 +1,14 @@
+Some basic notes:
+- BUR (borrow utilization rate)
+    - Specifies borrow_amt / collateral_amt
+    - A position is liquidateable if the BUR > 10000 - safety_margin - liquidation_incentive
+    - A position is only allowed to open if the BUR < max_bur_take
+        - if max_bur_take = 9250 the largest position that's possible to open is when 
+          borrow_amt / collateral_amt < 92.5%
+        - This also goes whenever an edit is made to an order, although 
+          order changes are always allowed if they decrease the BUR.
+
+- Orders are boxes
+    - Names are Concat(Address, order_id)
+        - order_id is super arbitrary (will probably change)
+    - Contents are Concat(collateral (u64), borrow(u64), interest_per_tok(u128))

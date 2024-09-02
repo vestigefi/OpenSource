@@ -1,0 +1,35 @@
+```title: Decentralized Perpetuals Trading Platform on the Algorand Blockchain (TBD)
+author: Grzegorz Raczek (@grzracz)
+company_name: Vestige.Fi
+category: DeFi
+focus_area: Decentralized Perpetuals Trading, On-Chain Oracle
+open_source: Yes
+amount_requested: 250,000 ALGO
+status: Draft
+---
+
+## Abstract
+This proposal outlines the development of a decentralized perpetuals trading platform. The platform will facilitate seamless trading of perpetual contracts, initially supporting ALGO/USDC with the potential to expand to other liquid assets in the future. In addition, a decentralized oracle will be created to provide accurate and reliable on-chain price feeds for assets traded across decentralized exchanges (Dexes). This will enable precise pricing for perpetual contracts and other DeFi products, further enhancing the Algorand ecosystem.
+
+## Team
+- Grzegorz Raczek: A seasoned Fullstack Senior Engineer with a strong focus on Algorand Blockchain development over the past 2 years. Grzegorz possesses deep expertise in the Algorand ecosystem and has contributed to numerous projects.
+- BunsanMuchi: A talented Blockchain developer with over 5 years of experience, specializing in DeFi and smart contract development. BunsanMuchi is renowned for creating groundbreaking solutions in the blockchain space.
+- Erik Hasselwander: A skilled Blockchain developer, specializing in DeFi and data analysis. Erik excels in analyzing complex data sets and designing user-friendly analytics tools tailored for the Algorand ecosystem.
+
+## Roadmap
+1. Month 1-2: Design and develop the core architecture for the decentralized perpetuals platform
+2. Month 3: Implement the decentralized oracle for accurate on-chain price feeds across Dexes
+3. Month 4: Integrate the perpetuals platform with the decentralized oracle for enhanced pricing
+4. Month 5: Perform rigorous testing of the platform and oracle to ensure safety and reliability
+5. Month 6: Officially launch the platform, provide comprehensive documentation, and offer ongoing support to users
+
+## Benefits for the Community
+The development of the decentralized perpetuals trading platform on the Algorand Blockchain will deliver several significant advantages to the Algorand community:
+1. Diversification of DeFi products within the Algorand ecosystem, fostering innovation and growth
+2. Increased on-chain trading volume driven by perpetuals trading, thereby enhancing network liquidity
+3. Improved price discovery for assets by enabling both long and short positions, leading to greater market efficiency
+4. Strengthened reliability and accuracy of asset pricing through the integration of a decentralized oracle
+5. Encouragement of further innovation and expansion of the Algorand ecosystem by offering sophisticated trading options to users
+
+## Additional Information
+The team at Vestige.Fi has an established track record of delivering high-quality projects within the Algorand ecosystem. Their dedication to the community and proven ability to create valuable tools and applications highlight their potential to make a significant impact with the decentralized perpetuals trading platform and its integrated decentralized oracle.```

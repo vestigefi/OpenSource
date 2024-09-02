@@ -1,0 +1,1390 @@
+#pragma version 9
+txn NumAppArgs
+int 0
+==
+bnz main_l12
+txna ApplicationArgs 0
+method "decentragate_sef(uint64,uint64,uint64,address)void"
+==
+bnz main_l11
+txna ApplicationArgs 0
+method "initialize(uint64,uint64,uint64,uint64,uint64,uint64,(byte[2],uint64,byte[])[])void"
+==
+bnz main_l10
+txna ApplicationArgs 0
+method "update_oracle()void"
+==
+bnz main_l9
+txna ApplicationArgs 0
+method "update_oracle_limited()void"
+==
+bnz main_l8
+txna ApplicationArgs 0
+method "initialize_upgrade(byte[],byte[])void"
+==
+bnz main_l7
+err
+main_l7:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub initializeupgradecaster_20
+int 1
+return
+main_l8:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub updateoraclelimitedcaster_19
+int 1
+return
+main_l9:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub updateoraclecaster_18
+int 1
+return
+main_l10:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub initializecaster_17
+int 1
+return
+main_l11:
+txn OnCompletion
+int NoOp
+==
+txn ApplicationID
+int 0
+!=
+&&
+assert
+callsub decentragatesefcaster_16
+int 1
+return
+main_l12:
+txn OnCompletion
+int NoOp
+==
+bnz main_l18
+txn OnCompletion
+int OptIn
+==
+bnz main_l17
+txn OnCompletion
+int UpdateApplication
+==
+bnz main_l16
+err
+main_l16:
+txn ApplicationID
+int 0
+!=
+assert
+txn Sender
+global CreatorAddress
+==
+assert
+txn ApprovalProgram
+sha512_256
+byte "uh"
+app_global_get
+==
+assert
+txn ClearStateProgram
+sha512_256
+byte "uc"
+app_global_get
+==
+assert
+byte "ua"
+app_global_get
+int 0
+>
+assert
+global LatestTimestamp
+byte "ua"
+app_global_get
+>
+assert
+byte "ua"
+app_global_del
+byte "uh"
+app_global_del
+byte "uc"
+app_global_del
+int 1
+return
+main_l17:
+txn ApplicationID
+int 0
+!=
+assert
+txn Sender
+byte "lr"
+int 0
+app_local_put
+int 1
+return
+main_l18:
+txn ApplicationID
+int 0
+==
+assert
+int 1
+return
+
+// paymentTxn
+paymentTxn_0:
+proto 3 0
+frame_dig -3
+int 0
+==
+bnz paymentTxn_0_l2
+int axfer
+itxn_field TypeEnum
+frame_dig -3
+itxn_field XferAsset
+frame_dig -2
+itxn_field AssetReceiver
+frame_dig -1
+itxn_field AssetAmount
+int 0
+itxn_field Fee
+b paymentTxn_0_l3
+paymentTxn_0_l2:
+int pay
+itxn_field TypeEnum
+frame_dig -2
+itxn_field Receiver
+frame_dig -1
+itxn_field Amount
+int 0
+itxn_field Fee
+paymentTxn_0_l3:
+retsub
+
+// optin
+optin_1:
+proto 2 0
+itxn_begin
+frame_dig -2
+int 0
+!=
+bnz optin_1_l3
+optin_1_l1:
+frame_dig -1
+int 0
+!=
+bz optin_1_l4
+frame_dig -2
+global CurrentApplicationAddress
+int 0
+callsub paymentTxn_0
+b optin_1_l4
+optin_1_l3:
+frame_dig -2
+global CurrentApplicationAddress
+int 0
+callsub paymentTxn_0
+itxn_next
+b optin_1_l1
+optin_1_l4:
+itxn_submit
+retsub
+
+// get_asset_holdings
+getassetholdings_2:
+proto 1 1
+frame_dig -1
+int 0
+==
+bnz getassetholdings_2_l2
+global CurrentApplicationAddress
+frame_dig -1
+asset_holding_get AssetBalance
+store 8
+retsub
+getassetholdings_2_l2:
+global CurrentApplicationAddress
+balance
+retsub
+
+// extract_sv_uint
+extractsvuint_3:
+proto 3 1
+frame_dig -3
+loads
+frame_dig -2
+int 24
+*
+frame_dig -1
+int 8
+*
++
+int 8
+substring3
+btoi
+retsub
+
+// populate_data
+populatedata_4:
+proto 6 0
+frame_dig -1
+store 9
+frame_dig -6
+byte "H2"
+==
+bnz populatedata_4_l10
+frame_dig -6
+byte "PT"
+==
+bnz populatedata_4_l7
+frame_dig -6
+byte "T3"
+==
+bnz populatedata_4_l4
+err
+populatedata_4_l4:
+frame_dig -2
+frame_dig -5
+byte "asset_1_reserves"
+app_local_get_ex
+store 19
+store 18
+frame_dig -2
+frame_dig -5
+byte "asset_2_reserves"
+app_local_get_ex
+store 21
+store 20
+frame_dig -2
+frame_dig -5
+byte "asset_1_id"
+app_local_get_ex
+store 23
+store 22
+frame_dig -2
+frame_dig -5
+byte "total_fee_share"
+app_local_get_ex
+store 25
+store 24
+load 19
+assert
+load 21
+assert
+load 23
+assert
+load 25
+assert
+frame_dig -4
+load 22
+==
+bnz populatedata_4_l6
+load 9
+load 9
+loads
+load 20
+itob
+concat
+load 18
+itob
+concat
+load 24
+itob
+concat
+stores
+b populatedata_4_l21
+populatedata_4_l6:
+load 9
+load 9
+loads
+load 18
+itob
+concat
+load 20
+itob
+concat
+load 24
+itob
+concat
+stores
+b populatedata_4_l21
+populatedata_4_l7:
+frame_dig -5
+byte "CONFIG"
+app_global_get_ex
+store 13
+store 12
+frame_dig -5
+byte "A"
+app_global_get_ex
+store 15
+store 14
+frame_dig -5
+byte "B"
+app_global_get_ex
+store 17
+store 16
+frame_dig -4
+load 12
+int 0
+extract_uint64
+==
+bnz populatedata_4_l9
+load 9
+load 9
+loads
+load 16
+itob
+concat
+load 14
+itob
+concat
+load 12
+int 16
+extract_uint64
+itob
+concat
+stores
+b populatedata_4_l21
+populatedata_4_l9:
+load 9
+load 9
+loads
+load 14
+itob
+concat
+load 16
+itob
+concat
+load 12
+int 16
+extract_uint64
+itob
+concat
+stores
+b populatedata_4_l21
+populatedata_4_l10:
+frame_dig -5
+byte base64(AA==)
+app_global_get_ex
+store 11
+store 10
+load 9
+load 9
+loads
+frame_dig -4
+int 0
+==
+bnz populatedata_4_l20
+frame_dig -4
+load 10
+int 32
+extract_uint64
+==
+bnz populatedata_4_l19
+load 10
+extract 105 8
+populatedata_4_l13:
+concat
+frame_dig -3
+int 0
+==
+bnz populatedata_4_l18
+frame_dig -3
+load 10
+int 32
+extract_uint64
+==
+bnz populatedata_4_l17
+load 10
+extract 105 8
+populatedata_4_l16:
+concat
+int 30
+itob
+concat
+stores
+b populatedata_4_l21
+populatedata_4_l17:
+load 10
+extract 97 8
+b populatedata_4_l16
+populatedata_4_l18:
+load 10
+extract 89 8
+b populatedata_4_l16
+populatedata_4_l19:
+load 10
+extract 97 8
+b populatedata_4_l13
+populatedata_4_l20:
+load 10
+extract 89 8
+b populatedata_4_l13
+populatedata_4_l21:
+retsub
+
+// do_sef_swap
+dosefswap_5:
+proto 6 0
+frame_dig -6
+byte "H2"
+==
+bnz dosefswap_5_l6
+frame_dig -6
+byte "PT"
+==
+bnz dosefswap_5_l5
+frame_dig -6
+byte "T3"
+==
+bnz dosefswap_5_l4
+err
+dosefswap_5_l4:
+frame_dig -5
+frame_dig -4
+frame_dig -3
+frame_dig -2
+frame_dig -1
+callsub dosefswap_6
+b dosefswap_5_l7
+dosefswap_5_l5:
+frame_dig -5
+frame_dig -4
+frame_dig -3
+frame_dig -2
+callsub dosefswap_7
+b dosefswap_5_l7
+dosefswap_5_l6:
+frame_dig -5
+frame_dig -4
+frame_dig -3
+frame_dig -2
+callsub dosefswap_8
+dosefswap_5_l7:
+retsub
+
+// do_sef_swap
+dosefswap_6:
+proto 5 0
+itxn_begin
+frame_dig -3
+frame_dig -1
+frame_dig -4
+callsub paymentTxn_0
+itxn_next
+byte "swap"
+itxn_field ApplicationArgs
+byte "fixed-input"
+itxn_field ApplicationArgs
+int 0
+itob
+itxn_field ApplicationArgs
+int 0
+itxn_field Fee
+frame_dig -5
+itxn_field ApplicationID
+frame_dig -3
+itxn_field Assets
+frame_dig -2
+itxn_field Assets
+frame_dig -1
+itxn_field Accounts
+int appl
+itxn_field TypeEnum
+itxn_submit
+retsub
+
+// do_sef_swap
+dosefswap_7:
+proto 4 0
+frame_dig -4
+app_params_get AppAddress
+store 27
+store 26
+itxn_begin
+frame_dig -2
+load 26
+frame_dig -3
+callsub paymentTxn_0
+itxn_next
+byte "SWAP"
+itxn_field ApplicationArgs
+int 0
+itob
+itxn_field ApplicationArgs
+int 0
+itxn_field Fee
+frame_dig -4
+itxn_field ApplicationID
+frame_dig -2
+frame_dig -1
+<
+bnz dosefswap_7_l5
+frame_dig -1
+dosefswap_7_l2:
+itxn_field Assets
+frame_dig -2
+frame_dig -1
+>
+bnz dosefswap_7_l4
+frame_dig -1
+b dosefswap_7_l6
+dosefswap_7_l4:
+frame_dig -2
+b dosefswap_7_l6
+dosefswap_7_l5:
+frame_dig -2
+b dosefswap_7_l2
+dosefswap_7_l6:
+itxn_field Assets
+int appl
+itxn_field TypeEnum
+itxn_submit
+retsub
+
+// do_sef_swap
+dosefswap_8:
+proto 4 0
+int 0
+dupn 3
+frame_dig -4
+byte base64(AA==)
+app_global_get_ex
+store 29
+store 28
+frame_dig -4
+app_params_get AppAddress
+store 31
+store 30
+itxn_begin
+frame_dig -2
+load 30
+frame_dig -3
+callsub paymentTxn_0
+itxn_next
+frame_dig -2
+int 0
+==
+frame_dig -1
+int 0
+==
+||
+bnz dosefswap_8_l4
+load 28
+int 32
+extract_uint64
+frame_dig -2
+==
+bnz dosefswap_8_l3
+frame_dig -3
+frame_bury 2
+int 0
+frame_bury 3
+int appl
+itxn_field TypeEnum
+frame_dig -4
+itxn_field ApplicationID
+method "Trader_swapBForA(uint64,uint64)(uint64,uint64)"
+itxn_field ApplicationArgs
+frame_dig 2
+itob
+itxn_field ApplicationArgs
+frame_dig 3
+itob
+itxn_field ApplicationArgs
+frame_dig -2
+itxn_field Assets
+frame_dig -1
+itxn_field Assets
+int 0
+itxn_field Fee
+b dosefswap_8_l7
+dosefswap_8_l3:
+frame_dig -3
+frame_bury 0
+int 0
+frame_bury 1
+int appl
+itxn_field TypeEnum
+frame_dig -4
+itxn_field ApplicationID
+method "Trader_swapAForB(uint64,uint64)(uint64,uint64)"
+itxn_field ApplicationArgs
+frame_dig 0
+itob
+itxn_field ApplicationArgs
+frame_dig 1
+itob
+itxn_field ApplicationArgs
+frame_dig -2
+itxn_field Assets
+frame_dig -1
+itxn_field Assets
+int 0
+itxn_field Fee
+b dosefswap_8_l7
+dosefswap_8_l4:
+frame_dig -2
+int 0
+==
+bnz dosefswap_8_l6
+frame_dig -3
+frame_bury 2
+int 0
+frame_bury 3
+int appl
+itxn_field TypeEnum
+frame_dig -4
+itxn_field ApplicationID
+method "Trader_swapBForA(uint64,uint64)(uint64,uint64)"
+itxn_field ApplicationArgs
+frame_dig 2
+itob
+itxn_field ApplicationArgs
+frame_dig 3
+itob
+itxn_field ApplicationArgs
+frame_dig -2
+itxn_field Assets
+frame_dig -1
+itxn_field Assets
+int 0
+itxn_field Fee
+b dosefswap_8_l7
+dosefswap_8_l6:
+frame_dig -3
+frame_bury 0
+int 0
+frame_bury 1
+int appl
+itxn_field TypeEnum
+frame_dig -4
+itxn_field ApplicationID
+method "Trader_swapAForB(uint64,uint64)(uint64,uint64)"
+itxn_field ApplicationArgs
+frame_dig 0
+itob
+itxn_field ApplicationArgs
+frame_dig 1
+itob
+itxn_field ApplicationArgs
+frame_dig -2
+itxn_field Assets
+frame_dig -1
+itxn_field Assets
+int 0
+itxn_field Fee
+dosefswap_8_l7:
+itxn_submit
+retsub
+
+// decentragate_sef
+decentragatesef_9:
+proto 4 0
+byte ""
+dup
+int 0
+byte ""
+int 0
+byte ""
+int 0
+byte ""
+dup
+int 0
+byte ""
+int 0
+byte ""
+byte "aa"
+box_get
+store 7
+store 6
+load 7
+assert
+load 6
+frame_bury 1
+frame_dig -4
+int 0
+==
+bnz decentragatesef_9_l17
+txn GroupIndex
+int 1
+-
+gtxns XferAsset
+frame_dig -4
+==
+assert
+txn GroupIndex
+int 1
+-
+gtxns AssetReceiver
+global CurrentApplicationAddress
+==
+assert
+txn GroupIndex
+int 1
+-
+gtxns AssetAmount
+store 4
+decentragatesef_9_l2:
+int 0
+store 2
+byte ""
+store 1
+int 0
+store 0
+decentragatesef_9_l3:
+load 0
+frame_dig 1
+int 0
+extract_uint16
+frame_bury 2
+frame_dig 2
+<
+bnz decentragatesef_9_l13
+frame_dig -3
+callsub getassetholdings_2
+store 5
+int 0
+store 3
+int 0
+store 0
+decentragatesef_9_l5:
+load 0
+frame_dig 1
+int 0
+extract_uint16
+frame_bury 2
+frame_dig 2
+<
+bnz decentragatesef_9_l9
+frame_dig -3
+callsub getassetholdings_2
+load 5
+-
+store 5
+load 5
+frame_dig -2
+>
+assert
+itxn_begin
+frame_dig -3
+frame_dig -1
+addr AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ
+==
+bnz decentragatesef_9_l8
+frame_dig -1
+b decentragatesef_9_l18
+decentragatesef_9_l8:
+txn Sender
+b decentragatesef_9_l18
+decentragatesef_9_l9:
+frame_dig 1
+frame_dig 1
+int 2
+load 0
+*
+int 2
++
+extract_uint16
+int 2
++
+load 0
+int 1
++
+frame_dig 1
+int 0
+extract_uint16
+frame_bury 9
+frame_dig 9
+==
+bnz decentragatesef_9_l12
+frame_dig 1
+int 2
+load 0
+*
+int 2
++
+int 2
++
+extract_uint16
+int 2
++
+decentragatesef_9_l11:
+substring3
+frame_bury 8
+frame_dig 8
+extract 0 2
+frame_bury 10
+frame_dig 8
+int 2
+extract_uint64
+frame_bury 11
+frame_dig 8
+frame_dig 8
+int 10
+extract_uint16
+dig 1
+len
+substring3
+frame_bury 12
+load 4
+int 1
+load 0
+int 0
+callsub extractsvuint_3
+*
+load 2
+/
+store 3
+frame_dig 10
+frame_dig 11
+load 3
+frame_dig -4
+frame_dig -3
+frame_dig 12
+extract 2 0
+callsub dosefswap_5
+load 0
+int 1
++
+store 0
+b decentragatesef_9_l5
+decentragatesef_9_l12:
+frame_dig 1
+len
+b decentragatesef_9_l11
+decentragatesef_9_l13:
+frame_dig 1
+frame_dig 1
+int 2
+load 0
+*
+int 2
++
+extract_uint16
+int 2
++
+load 0
+int 1
++
+frame_dig 1
+int 0
+extract_uint16
+frame_bury 4
+frame_dig 4
+==
+bnz decentragatesef_9_l16
+frame_dig 1
+int 2
+load 0
+*
+int 2
++
+int 2
++
+extract_uint16
+int 2
++
+decentragatesef_9_l15:
+substring3
+frame_bury 3
+frame_dig 3
+extract 0 2
+frame_bury 5
+frame_dig 3
+int 2
+extract_uint64
+frame_bury 6
+frame_dig 3
+frame_dig 3
+int 10
+extract_uint16
+dig 1
+len
+substring3
+frame_bury 7
+frame_dig 5
+frame_dig 6
+frame_dig -4
+frame_dig -3
+frame_dig 7
+extract 2 0
+int 1
+callsub populatedata_4
+load 2
+load 1
+load 0
+int 24
+*
+int 8
+substring3
+btoi
++
+store 2
+load 0
+int 1
++
+store 0
+b decentragatesef_9_l3
+decentragatesef_9_l16:
+frame_dig 1
+len
+b decentragatesef_9_l15
+decentragatesef_9_l17:
+txn GroupIndex
+int 1
+-
+gtxns Receiver
+global CurrentApplicationAddress
+==
+assert
+txn GroupIndex
+int 1
+-
+gtxns Amount
+store 4
+b decentragatesef_9_l2
+decentragatesef_9_l18:
+load 5
+callsub paymentTxn_0
+itxn_submit
+retsub
+
+// initialize
+initialize_10:
+proto 7 0
+txn Sender
+global CreatorAddress
+==
+assert
+byte "mutable"
+app_global_get
+byte "lr"
+app_global_get
+!
+||
+assert
+byte "a1"
+frame_dig -7
+app_global_put
+byte "a2"
+frame_dig -6
+app_global_put
+byte "ll1"
+frame_dig -5
+app_global_put
+byte "ll2"
+frame_dig -4
+app_global_put
+byte "lr"
+global Round
+app_global_put
+frame_dig -7
+itob
+frame_dig -5
+app_global_put
+frame_dig -6
+itob
+frame_dig -4
+app_global_put
+byte "mlc"
+frame_dig -3
+app_global_put
+byte "mutable"
+frame_dig -2
+app_global_put
+byte "aa"
+frame_dig -1
+len
+box_create
+assert
+byte "aa"
+frame_dig -1
+box_put
+frame_dig -7
+frame_dig -6
+callsub optin_1
+retsub
+
+// update_oracle
+updateoracle_11:
+proto 0 0
+callsub updateoracle_13
+retsub
+
+// update_oracle_limited
+updateoraclelimited_12:
+proto 0 0
+txn Sender
+byte "lr"
+app_local_get
+byte "lr"
+app_global_get
+<
+assert
+callsub updateoracle_13
+txn Sender
+byte "lr"
+byte "lr"
+app_global_get
+app_local_put
+retsub
+
+// _update_oracle
+updateoracle_13:
+proto 0 0
+byte ""
+dup
+int 0
+byte ""
+int 0
+byte ""
+int 0
+byte ""
+global GroupSize
+int 1
+==
+assert
+global CallerApplicationID
+int 0
+==
+assert
+int 0
+store 34
+int 0
+store 35
+byte "aa"
+box_get
+store 37
+store 36
+load 37
+assert
+load 36
+frame_bury 1
+int 0
+store 33
+updateoracle_13_l1:
+load 33
+frame_dig 1
+int 0
+extract_uint16
+frame_bury 2
+frame_dig 2
+<
+bnz updateoracle_13_l4
+global Round
+byte "lr"
+app_global_get
+>
+bz updateoracle_13_l8
+byte "ll1"
+byte "a1"
+app_global_get
+itob
+app_global_get
+app_global_put
+byte "ll2"
+byte "a2"
+app_global_get
+itob
+app_global_get
+app_global_put
+byte "lr"
+global Round
+app_global_put
+b updateoracle_13_l8
+updateoracle_13_l4:
+frame_dig 1
+frame_dig 1
+int 2
+load 33
+*
+int 2
++
+extract_uint16
+int 2
++
+load 33
+int 1
++
+frame_dig 1
+int 0
+extract_uint16
+frame_bury 4
+frame_dig 4
+==
+bnz updateoracle_13_l7
+frame_dig 1
+int 2
+load 33
+*
+int 2
++
+int 2
++
+extract_uint16
+int 2
++
+updateoracle_13_l6:
+substring3
+frame_bury 3
+frame_dig 3
+extract 0 2
+frame_bury 5
+frame_dig 3
+int 2
+extract_uint64
+frame_bury 6
+frame_dig 3
+frame_dig 3
+int 10
+extract_uint16
+dig 1
+len
+substring3
+frame_bury 7
+byte ""
+store 32
+frame_dig 5
+frame_dig 6
+byte "a1"
+app_global_get
+byte "a2"
+app_global_get
+frame_dig 7
+extract 2 0
+int 32
+callsub populatedata_4
+load 34
+load 32
+int 0
+extract_uint64
++
+store 34
+load 35
+load 32
+int 8
+extract_uint64
++
+store 35
+load 33
+int 1
++
+store 33
+b updateoracle_13_l1
+updateoracle_13_l7:
+frame_dig 1
+len
+b updateoracle_13_l6
+updateoracle_13_l8:
+int 34
+byte "ll1"
+callsub capliquiditychange_14
+int 35
+byte "ll2"
+callsub capliquiditychange_14
+byte "a1"
+app_global_get
+itob
+load 34
+app_global_put
+byte "a2"
+app_global_get
+itob
+load 35
+app_global_put
+retsub
+
+// cap_liquidity_change
+capliquiditychange_14:
+proto 2 0
+frame_dig -2
+store 38
+frame_dig -1
+app_global_get
+int 10000
+byte "mlc"
+app_global_get
++
+mulw
+int 0
+int 10000
+divmodw
+pop
+pop
+swap
+!
+assert
+store 39
+frame_dig -1
+app_global_get
+int 10000
+byte "mlc"
+app_global_get
+-
+mulw
+int 0
+int 10000
+divmodw
+pop
+pop
+swap
+!
+assert
+store 40
+load 38
+loads
+load 39
+>
+bnz capliquiditychange_14_l3
+capliquiditychange_14_l1:
+load 38
+loads
+load 40
+<
+bz capliquiditychange_14_l4
+load 38
+load 40
+stores
+b capliquiditychange_14_l4
+capliquiditychange_14_l3:
+load 38
+load 39
+stores
+b capliquiditychange_14_l1
+capliquiditychange_14_l4:
+retsub
+
+// initialize_upgrade
+initializeupgrade_15:
+proto 2 0
+txn Sender
+global CreatorAddress
+==
+assert
+byte "uh"
+frame_dig -2
+extract 2 0
+app_global_put
+byte "uc"
+frame_dig -1
+extract 2 0
+app_global_put
+byte "ua"
+global LatestTimestamp
+int 1000
+-
+app_global_put
+retsub
+
+// decentragate_sef_caster
+decentragatesefcaster_16:
+proto 0 0
+int 0
+dupn 2
+byte ""
+txna ApplicationArgs 1
+btoi
+frame_bury 0
+txna ApplicationArgs 2
+btoi
+frame_bury 1
+txna ApplicationArgs 3
+btoi
+frame_bury 2
+txna ApplicationArgs 4
+frame_bury 3
+frame_dig 0
+frame_dig 1
+frame_dig 2
+frame_dig 3
+callsub decentragatesef_9
+retsub
+
+// initialize_caster
+initializecaster_17:
+proto 0 0
+int 0
+dupn 5
+byte ""
+txna ApplicationArgs 1
+btoi
+frame_bury 0
+txna ApplicationArgs 2
+btoi
+frame_bury 1
+txna ApplicationArgs 3
+btoi
+frame_bury 2
+txna ApplicationArgs 4
+btoi
+frame_bury 3
+txna ApplicationArgs 5
+btoi
+frame_bury 4
+txna ApplicationArgs 6
+btoi
+frame_bury 5
+txna ApplicationArgs 7
+frame_bury 6
+frame_dig 0
+frame_dig 1
+frame_dig 2
+frame_dig 3
+frame_dig 4
+frame_dig 5
+frame_dig 6
+callsub initialize_10
+retsub
+
+// update_oracle_caster
+updateoraclecaster_18:
+proto 0 0
+callsub updateoracle_11
+retsub
+
+// update_oracle_limited_caster
+updateoraclelimitedcaster_19:
+proto 0 0
+callsub updateoraclelimited_12
+retsub
+
+// initialize_upgrade_caster
+initializeupgradecaster_20:
+proto 0 0
+byte ""
+dup
+txna ApplicationArgs 1
+frame_bury 0
+txna ApplicationArgs 2
+frame_bury 1
+frame_dig 0
+frame_dig 1
+callsub initializeupgrade_15
+retsub
